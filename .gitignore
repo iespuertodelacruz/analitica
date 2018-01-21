@@ -1,3 +1,5 @@
 .DS_Store
 ~$*.xls*
 .ipynb_checkpoints
+output*.png
+*.tex
