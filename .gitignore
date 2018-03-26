@@ -3,3 +3,5 @@
 .ipynb_checkpoints
 output*.png
 *.tex
+data_tmp
+*.pyc
