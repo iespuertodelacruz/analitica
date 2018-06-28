@@ -19,6 +19,22 @@ Cada fichero de estos tendrá tres *hojas* cada una con la nomenclatura `E1`, `E
 
 Se espera que hayan ficheros de rendimiento en la carpeta `data_tmp` con la siguiente nomenclatura:
 
+#### Primera evaluación
+
+~~~
+data_tmp
+├── C1718E1_1CFGM.xls
+├── C1718E1_1CFGS.xls
+├── C1718E1_2CFGM.xls
+├── C1718E1_2CFGS.xls
+├── C1718E1_3DAM.xls
+├── C1718E1_BACH.xls
+├── C1718E1_ESO.xls
+└── C1718E1_FPB.xls
+~~~
+
+#### Segunda evaluación
+
 ~~~
 data_tmp
 ├── C1718E2_1CFGM.xls
@@ -31,8 +47,24 @@ data_tmp
 └── C1718E2_FPB.xls
 ~~~
 
+#### Tercera evaluación
+
+~~~
+data_tmp
+├── C1718E3_12DAM.xls   # 1º y 2º de DAM
+├── C1718E3_1CFGM.xls
+├── C1718E3_1CFGS.xls
+├── C1718E3_1FPB.xls
+├── C1718E3_2CFGM.xls
+├── C1718E3_2CFGS.xls
+├── C1718E3_2FPB.xls
+├── C1718E3_3DAM.xls
+├── C1718E3_BACH.xls
+└── C1718E3_ESO.xls
+~~~
+
 - `C1718`: indica el curso **2017/2018**
-- `E2`: indica que es la **2ª evaluación**
+- `E1, E2, E3`: indica que es la **1ª, 2ª o 3ª evaluación**
 
 > NOTA: Estos ficheros salen directamente de Pincel EKADE desde la opción de *"estadísticas de rendimiento"*.
 
@@ -42,13 +74,13 @@ Se espera que haya un fichero de absentismo en la carpeta `data_tmp` con la sigu
 
 ~~~
 data_tmp
-└── C1718E2_ABSENTISMO.pdf
+└── C1718E1_ABSENTISMO.pdf  # E2 ó E3
 ~~~
 
 - `C1718`: indica el curso **2017/2018**
-- `E2`: indica que es la **2ª evaluación**
+- `E1, E2, E3`: indica que es la **1ª, 2ª o 3ª evaluación**
 
-> NOTA: Este fichero sale directamente de Pincel EKADE desde la opción de *"estadísticas de absentismo"*.
+> NOTA: Este fichero sale directamente de Pincel EKADE desde la opción *"Informe de absentismo por grupos clase"*. **No olvidarse de marcar la opción "Por grupo en distintas páginas"**
 
 ### Convivencia
 
@@ -56,13 +88,13 @@ Se espera que haya un fichero de convivencia en la carpeta `data_tmp` con la sig
 
 ~~~
 data_tmp
-└── C1718_CONVIVENCIA.ods
+└── C1718E1_CONVIVENCIA.ods  # E2 ó E3
 ~~~
 
 - `C1718`: indica el curso **2017/2018**
-- `E2`: indica que es la **2ª evaluación**
+- `E1, E2, E3`: indica que es la **1ª, 2ª o 3ª evaluación**
 
-Este fichero es una hoja de cálculo de LibreOffice y debe tener una *hoja* por cada evaluación. Las hojas se deben llamar `E1`, `E2` y `E3`. La estructura de cada hoja seguirá la siguiente convención:
+Este fichero es una hoja de cálculo de LibreOffice y debe tener la siguiente estructura:
 
 ~~~
 ESO1A   3   0
@@ -90,4 +122,36 @@ Donde:
 $> python extract.py --year=1718 --eval=2
 ~~~
 
-> NOTA: En este caso lanzaríamos la extracción de información de la segunda evaluación del curso 2017-2018.
+> NOTA: En este caso lanzaríamos la extracción de información de la segunda evaluación del curso 2017-2018, e incluirá los valores correspondientes en el fichero `data/C1718.xlsx`.
+
+## Competencias básicas
+
+Se espera que haya un fichero de estadísticas de calificaciones de competencias básicas en la carpeta `data` con la siguiente nomenclatura:
+
+~~~
+data
+└── C1718E1_ESO_CCBB.csv  # E2 ó E3
+~~~
+
+- `C1718`: indica el curso **2017/2018**
+- `E1, E2, E3`: indica que es la **1ª, 2ª o 3ª evaluación**
+
+> NOTA: Este fichero sale directamente de Pincel EKADE desde la opción "Estadísticas de rendimiento escolar en items por evaluación".
+
+**OJO! Este fichero va en la carpeta `data` NO en la carpeta `data_tmp`**
+
+## Creación del notebook
+
+Para cada evaluación se debe crear un nuevo Jupyter Notebook. Supongamos que vamos a analizar la tercera evaluación del curso 2017-2018. Haremos lo siguiente:
+
+~~~console
+$ cd C1718
+$ C1718> cp E2.ipynb E3.ipynb
+$ C1718> ls
+E1.ipynb E2.ipynb E3.ipynb
+$ C1718> cd ..
+$ jupyter notebook
+...
+~~~
+
+A partir de aquí modificar las cosas necesarios en el nuevo Jupyter Notebook.
