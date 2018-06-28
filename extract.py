@@ -46,6 +46,8 @@ class DataLoader:
         for group, value in config.GROUPS.items():
             # source
             source = value["source"][self.eval_index]
+            if not source:
+                continue
             filename = f"{self.basename}{source['file_suffix']}.xls"
             path = os.path.join("data_tmp", filename)
             try:
@@ -69,14 +71,15 @@ class DataLoader:
 
     def load_cohabitation(self):
         logger.info("Cargando información de convivencia...")
-        filename = f"{self.year}_CONVIVENCIA.ods"
+        filename = f"{self.basename}_CONVIVENCIA.ods"
         path = os.path.join("data_tmp", filename)
         try:
             data = pyexcel_ods.get_data(path)
         except FileNotFoundError:
             logger.error(f"No se encuentra el fichero '{path}'")
             sys.exit()
-        for row in data[self.evaluation]:
+        data = list(data.values())[0]
+        for row in data:
             group = row[0]
             try:
                 target = config.GROUPS[group]["target"]
