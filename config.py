@@ -186,7 +186,11 @@ GROUPS = {
             "file_suffix": "_FPB",
             "sheet": "Sheet1",
             "success": (21, 6)
-        },) * 3,
+        },) * 2 + ({
+            "file_suffix": "_1FPB",
+            "sheet": "InformeRendimientoEscolar",
+            "success": (21, 6)
+        },),
         "target": {
             "success": "C15",
             "ratio": "G15",
@@ -200,7 +204,11 @@ GROUPS = {
             "file_suffix": "_FPB",
             "sheet": "Sheet2",
             "success": (21, 6)
-        },) * 3,
+        },) * 2 + ({
+            "file_suffix": "_2FPB",
+            "sheet": "InformeRendimientoEscolar",
+            "success": (21, 6)
+        },),
         "target": {
             "success": "C16",
             "ratio": "G16",
@@ -487,6 +495,48 @@ GROUPS = {
             "reports": "E36",
             "non_attendance": "F36",
             "absence": "D36"
+        }
+    },
+    "1DAM": {
+        "source": (None, None, {
+            "file_suffix": "_12DAM",
+            "sheet": "Sheet1",
+            "success": (20, 6)
+        }),
+        "target": {
+            "success": "C37",
+            "ratio": "G37",
+            "reports": "E37",
+            "non_attendance": "F37",
+            "absence": "D37"
+        }
+    },
+    "2DAM": {
+        "source": (None, None, {
+            "file_suffix": "_12DAM",
+            "sheet": "Sheet2",
+            "success": (21, 6)
+        }),
+        "target": {
+            "success": "C38",
+            "ratio": "G38",
+            "reports": "E38",
+            "non_attendance": "F38",
+            "absence": "D38"
+        }
+    },
+    "3DAM": {
+        "source": (None, None, {
+            "file_suffix": "_3DAM",
+            "sheet": "InformeRendimientoEscolar",
+            "success": (22, 6)
+        }),
+        "target": {
+            "success": "C39",
+            "ratio": "G39",
+            "reports": "E39",
+            "non_attendance": "F39",
+            "absence": "D39"
         }
     }
 }
