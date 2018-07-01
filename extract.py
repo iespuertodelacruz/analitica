@@ -19,6 +19,7 @@ import logging
 import PyPDF2
 import re
 import sys
+import utils
 
 
 logger = logging.getLogger(__name__)
@@ -64,9 +65,10 @@ class DataLoader:
             for i in range(ratio_row, ratio_row + 5):
                 ratio += float(sh.cell_value(i, ratio_col))
             # target
-            target = value["target"]
-            self.sh[target["success"]] = f"{success:.2f}"
-            self.sh[target["ratio"]] = ratio
+            c = utils.get_target_cell(group, "success")
+            self.sh[c] = f"{success:.2f}"
+            c = utils.get_target_cell(group, "ratio")
+            self.sh[c] = ratio
         self.wb.save(self.path_target)
 
     def load_cohabitation(self):
@@ -81,19 +83,19 @@ class DataLoader:
         data = list(data.values())[0]
         for row in data:
             group = row[0]
-            try:
-                target = config.GROUPS[group]["target"]
-            except KeyError:
+            if group not in config.GROUPS.keys():
                 logger.warning(f"Grupo '{group}' no encontrado...")
             else:
                 if len(row) > 1:
                     reports = int(row[1])
                     if reports > 0:
-                        self.sh[target["reports"]] = reports
+                        c = utils.get_target_cell(group, "reports")
+                        self.sh[c] = reports
                 if len(row) > 2:
                     non_attendance = int(row[2])
                     if non_attendance > 0:
-                        self.sh[target["non_attendance"]] = non_attendance
+                        c = utils.get_target_cell(group, "non_attendance")
+                        self.sh[c] = non_attendance
         self.wb.save(self.path_target)
 
     def load_absence(self):
@@ -114,15 +116,15 @@ class DataLoader:
                 if r:
                     justified_absence = \
                         float(r.groups()[0].replace(",", "."))
-                    non_justified_absence = \
+                    unjustified_absence = \
                         float(r.groups()[1].replace(",", "."))
-                    total_absence = justified_absence + non_justified_absence
-                    try:
-                        target = config.GROUPS[group]["target"]
-                    except KeyError:
+                    if group not in config.GROUPS.keys():
                         logger.warning(f"Grupo '{group}' no encontrado...")
                     else:
-                        self.sh[target["absence"]] = f"{total_absence:.2f}"
+                        c = utils.get_target_cell(group, "justified_absence")
+                        self.sh[c] = f"{justified_absence:.2f}"
+                        c = utils.get_target_cell(group, "unjustified_absence")
+                        self.sh[c] = f"{unjustified_absence:.2f}"
         self.wb.save(self.path_target)
 
 
