@@ -2,11 +2,13 @@
 Extract academic data from several input files and save them to new one.
 
 Usage:
-    extract.py --year=<year> --eval=<eval>
+    extract.py --year=<year> --eval=<eval> [--type=<type>]
 
 Options:
     --year=<year>   School year to work with (1516 or 1617 or 1718...)
     --eval=<eval>   Evaluation/trimester (1, 2, 3)
+    --type=<type>   Type of data (academic, cohabitation, absence, all)
+                    [default: all]
 """
 from docopt import docopt
 import xlrd
@@ -131,6 +133,13 @@ class DataLoader:
 if __name__ == "__main__":
     arguments = docopt(__doc__)
     data_loader = DataLoader(arguments["--year"], arguments["--eval"])
-    data_loader.load_academic()
-    data_loader.load_cohabitation()
-    data_loader.load_absence()
+    if arguments["--type"] == "all":
+        data_loader.load_academic()
+        data_loader.load_cohabitation()
+        data_loader.load_absence()
+    elif arguments["--type"] == "academic":
+        data_loader.load_academic()
+    elif arguments["--type"] == "cohabitation":
+        data_loader.load_cohabitation()
+    elif arguments["--type"] == "absence":
+        data_loader.load_absence()
