@@ -70,6 +70,8 @@ data_tmp
 
 ### Absentismo
 
+El absentismo se va a estudiar de forma acumulada y será la suma de la faltas justificadas e injustificadas.
+
 Se espera que haya un fichero de absentismo en la carpeta `data_tmp` con la siguiente nomenclatura:
 
 ~~~
@@ -80,7 +82,12 @@ data_tmp
 - `C1718`: indica el curso **2017/2018**
 - `E1, E2, E3`: indica que es la **1ª, 2ª o 3ª evaluación**
 
-> NOTA: Este fichero sale directamente de Pincel EKADE desde la opción *"Informe de absentismo por grupos clase"*. **No olvidarse de marcar la opción "Por grupo en distintas páginas"**
+> NOTA: Este fichero sale directamente de Pincel EKADE desde la opción *"Informe de absentismo por grupos clase"*. **No olvidarse de marcar las siguientes opciones:**
+
+- "Por grupo en distintas páginas"
+- "Selección del período":
+    - Desde: `01/09/<año>`
+    - Hasta: `<Fecha de finalización del trimestre de estudio>`
 
 ### Convivencia
 
