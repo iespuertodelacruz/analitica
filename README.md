@@ -133,10 +133,10 @@ $> python extract.py --year=1718 --eval=2
 
 ## Competencias básicas
 
-Se espera que haya un fichero de estadísticas de calificaciones de competencias básicas en la carpeta `data` con la siguiente nomenclatura:
+Se espera que haya un fichero de estadísticas de calificaciones de competencias básicas en la carpeta `data/ccbb` con la siguiente nomenclatura:
 
 ~~~
-data
+data/ccbb
 └── C1718E1_ESO_CCBB.csv  # E2 ó E3
 ~~~
 
@@ -145,7 +145,7 @@ data
 
 > NOTA: Este fichero sale directamente de Pincel EKADE desde la opción "Estadísticas de rendimiento escolar en items por evaluación".
 
-**OJO! Este fichero va en la carpeta `data` NO en la carpeta `data_tmp`**
+**OJO! Este fichero va en la carpeta `data/ccbb` NO en la carpeta `data_tmp`**
 
 ## Creación del notebook
 
