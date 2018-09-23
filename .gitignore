@@ -5,3 +5,4 @@ output*.png
 *.tex
 data_tmp
 *.pyc
+.vscode
