@@ -4,20 +4,20 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-jupyterlab = "*"
-pandas = "*"
-seaborn = "*"
+docopt = "*"
+jupyter = "*"
 xlrd = "*"
-scipy = "*"
 openpyxl = "*"
 pyexcel-ods = "*"
 coloredlogs = "*"
+"pypdf2" = "*"
+pandas = "*"
+seaborn = "*"
 
 [dev-packages]
-ipython = "*"
 "flake8" = "*"
+yapf = "*"
 rope = "*"
-"autopep8" = "*"
 
 [requires]
 python_version = "3.7"
