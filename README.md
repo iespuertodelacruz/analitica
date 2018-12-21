@@ -122,14 +122,27 @@ Donde:
 
 ### Lanzar la extracción de información
 
-1. Limpiar la hoja de la evaluación correspondiente del fichero `data/CXXYY.xlsx` **dejando intactas las dos primeras columnas de `grupo` y `etapa`**.
-2. Activar el entorno virtual y ejecutar:
+#### Fichero excel de destino
+
+En primer lugar hay que limpiar la hoja de la evaluación correspondiente del fichero `data/CXXYY.xlsx`, ajustando los grupos correspondientes a cada curso escolar y **dejando intactas las dos primeras columnas de `grupo` y `etapa`**.
+
+#### `config.py`
+
+En este fichero se establecen las filas y columnas de referencia del éxito escolar en la clave `success`. Coincide con la fila **0 suspensos** y la columna **\%** de los ficheros de rendimiento escolar que salen del EKADE.
+
+Las filas y columnas son **en base 0** y en caso de que hubieran dos filas o columnas fusionadas hay que quedarse con el índice de la primera de ellas.
+
+> Para poder ver en el **EXCEL** las etiquetas de columnas de forma numérica en vez de con letras, basta con ir a `Preferencias -> General -> Usar estilo de referencia F1C1`.
+
+Tener cuidado también con la clave `sheet` del fichero de configuración `config.py` que establece el nombre de *hoja de cálculo* donde se encuentran los datos.
+
+#### Lanzar la extracción
+
+Activar el entorno virtual y ejecutar:
 
 ~~~console
-$> python extract.py --year=1718 --eval=2
+$> python extract.py --year=1718 --eval=2  # 2ª eval. del curso 2017-2018
 ~~~
-
-> NOTA: En este caso lanzaríamos la extracción de información de la segunda evaluación del curso 2017-2018, e incluirá los valores correspondientes en el fichero `data/C1718.xlsx`.
 
 ## Competencias básicas
 
