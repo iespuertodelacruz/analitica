@@ -58,14 +58,23 @@ class DataLoader:
             except FileNotFoundError:
                 logger.error(f"No se encuentra el fichero '{path}'")
                 sys.exit()
-            sh = wb.sheet_by_name(source["sheet"])
+            sheet_name = source["sheet"]
+            sh = wb.sheet_by_name(sheet_name)
             success = sh.cell_value(*source["success"])
             # ratio
             ratio_row = source["success"][0]
             ratio_col = source["success"][1] - 2
             ratio = 0
             for i in range(ratio_row, ratio_row + 5):
-                ratio += float(sh.cell_value(i, ratio_col))
+                try:
+                    value = sh.cell_value(i, ratio_col)
+                    ratio += float(value)
+                except ValueError:
+                    logger.error(
+                        (f'El valor "{value}" en ({i}, {ratio_col}) de '
+                         f'{sheet_name} en {filename} no parece correcto!')
+                    )
+                    sys.exit()
             # target
             c = utils.get_target_cell(group, "success")
             self.sh[c] = f"{success:.2f}"
@@ -114,19 +123,24 @@ class DataLoader:
             r = re.search(r"Grupo:([\dA-Z]+)", text)
             if r:
                 group = r.groups()[0]
+                if group not in config.GROUPS.keys():
+                    logger.warning((f"Grupo '{group}' no encontrado en "
+                                    "el fichero de configuración"))
+                    continue
+                if not config.GROUPS[group]['source'][self.eval_index]:
+                    logger.warning((f"Ignorando '{group}' al no estar definido"
+                                    " para esta evaluación"))
+                    continue
                 r = re.search(r"\(SI\)(\d+,\d\d)(\d+,\d\d).*MOTIVOS", text)
                 if r:
                     justified_absence = \
                         float(r.groups()[0].replace(",", "."))
                     unjustified_absence = \
                         float(r.groups()[1].replace(",", "."))
-                    if group not in config.GROUPS.keys():
-                        logger.warning(f"Grupo '{group}' no encontrado...")
-                    else:
-                        c = utils.get_target_cell(group, "justified_absence")
-                        self.sh[c] = f"{justified_absence:.2f}"
-                        c = utils.get_target_cell(group, "unjustified_absence")
-                        self.sh[c] = f"{unjustified_absence:.2f}"
+                    c = utils.get_target_cell(group, "justified_absence")
+                    self.sh[c] = f"{justified_absence:.2f}"
+                    c = utils.get_target_cell(group, "unjustified_absence")
+                    self.sh[c] = f"{unjustified_absence:.2f}"
         self.wb.save(self.path_target)
 
 

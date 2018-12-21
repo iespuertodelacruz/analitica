@@ -32,21 +32,13 @@ GROUPS = {
         },) * 3,
         "target_row": 4,
     },
-    "ESO1D": {
-        "source": ({
-            "file_suffix": "_ESO",
-            "sheet": "Sheet1",
-            "success": (29, 29)
-        },) * 3,
-        "target_row": 5,
-    },
     "ESO2A": {
         "source": ({
             "file_suffix": "_ESO",
             "sheet": "Sheet2",
             "success": (29, 6)
         },) * 3,
-        "target_row": 6,
+        "target_row": 5,
     },
     "ESO2B": {
         "source": ({
@@ -54,7 +46,7 @@ GROUPS = {
             "sheet": "Sheet2",
             "success": (29, 13)
         },) * 3,
-        "target_row": 7,
+        "target_row": 6,
     },
     "ESO2C": {
         "source": ({
@@ -62,15 +54,15 @@ GROUPS = {
             "sheet": "Sheet2",
             "success": (29, 21)
         },) * 3,
-        "target_row": 8,
+        "target_row": 7,
     },
-    "ESO2Z": {
+    "ESO2D": {
         "source": ({
             "file_suffix": "_ESO",
             "sheet": "Sheet5",
-            "success": (26, 6)
+            "success": (25, 6)
         },) * 3,
-        "target_row": 9,
+        "target_row": 8,
     },
     "ESO3A": {
         "source": ({
@@ -78,7 +70,7 @@ GROUPS = {
             "sheet": "Sheet3",
             "success": (34, 6)
         },) * 3,
-        "target_row": 10,
+        "target_row": 9,
     },
     "ESO3B": {
         "source": ({
@@ -86,13 +78,21 @@ GROUPS = {
             "sheet": "Sheet3",
             "success": (34, 13)
         },) * 3,
+        "target_row": 10,
+    },
+    "ESO3C": {
+        "source": ({
+            "file_suffix": "_ESO",
+            "sheet": "Sheet3",
+            "success": (34, 21)
+        },) * 3,
         "target_row": 11,
     },
-    "ESO3Z": {
+    "ESO3D": {
         "source": ({
             "file_suffix": "_ESO",
             "sheet": "Sheet6",
-            "success": (26, 6)
+            "success": (25, 6)
         },) * 3,
         "target_row": 12,
     },
@@ -117,11 +117,7 @@ GROUPS = {
             "file_suffix": "_FPB",
             "sheet": "Sheet1",
             "success": (21, 6)
-        },) * 2 + ({
-            "file_suffix": "_1FPB",
-            "sheet": "InformeRendimientoEscolar",
-            "success": (21, 6)
-        },),
+        },) * 3,
         "target_row": 15,
     },
     "2FPB": {
@@ -129,11 +125,7 @@ GROUPS = {
             "file_suffix": "_FPB",
             "sheet": "Sheet2",
             "success": (21, 6)
-        },) * 2 + ({
-            "file_suffix": "_2FPB",
-            "sheet": "InformeRendimientoEscolar",
-            "success": (21, 6)
-        },),
+        },) * 3,
         "target_row": 16,
     },
     "1CIE": {
@@ -170,7 +162,7 @@ GROUPS = {
     },
     "1TEL": {
         "source": ({
-            "file_suffix": "_1CFGM",
+            "file_suffix": "_CFGM",
             "sheet": "Sheet1",
             "success": (22, 6)
         },) * 3,
@@ -178,7 +170,7 @@ GROUPS = {
     },
     "1ELE": {
         "source": ({
-            "file_suffix": "_1CFGM",
+            "file_suffix": "_CFGM",
             "sheet": "Sheet2",
             "success": (21, 6)
         },) * 3,
@@ -186,7 +178,7 @@ GROUPS = {
     },
     "1CAR": {
         "source": ({
-            "file_suffix": "_1CFGM",
+            "file_suffix": "_CFGM",
             "sheet": "Sheet3",
             "success": (21, 6)
         },) * 3,
@@ -194,31 +186,31 @@ GROUPS = {
     },
     "2TEL": {
         "source": ({
-            "file_suffix": "_2CFGM",
-            "sheet": "Sheet1",
+            "file_suffix": "_CFGM",
+            "sheet": "Sheet4",
             "success": (23, 6)
         },) * 3,
         "target_row": 24,
     },
     "2ELE": {
         "source": ({
-            "file_suffix": "_2CFGM",
-            "sheet": "Sheet2",
+            "file_suffix": "_CFGM",
+            "sheet": "Sheet5",
             "success": (24, 6)
         },) * 3,
         "target_row": 25,
     },
     "2CAR": {
         "source": ({
-            "file_suffix": "_2CFGM",
-            "sheet": "Sheet3",
+            "file_suffix": "_CFGM",
+            "sheet": "Sheet6",
             "success": (22, 6)
         },) * 3,
         "target_row": 26,
     },
     "1ARI": {
         "source": ({
-            "file_suffix": "_1CFGS",
+            "file_suffix": "_CFGS",
             "sheet": "Sheet1",
             "success": (24, 6)
         },) * 3,
@@ -226,7 +218,7 @@ GROUPS = {
     },
     "1ALO": {
         "source": ({
-            "file_suffix": "_1CFGS",
+            "file_suffix": "_CFGS",
             "sheet": "Sheet2",
             "success": (24, 6)
         },) * 3,
@@ -234,7 +226,7 @@ GROUPS = {
     },
     "1GIT": {
         "source": ({
-            "file_suffix": "_1CFGS",
+            "file_suffix": "_CFGS",
             "sheet": "Sheet3",
             "success": (24, 6)
         },) * 3,
@@ -242,7 +234,7 @@ GROUPS = {
     },
     "1ASR": {
         "source": ({
-            "file_suffix": "_1CFGS",
+            "file_suffix": "_CFGS",
             "sheet": "Sheet4",
             "success": (23, 6)
         },) * 3,
@@ -250,7 +242,7 @@ GROUPS = {
     },
     "1DAW": {
         "source": ({
-            "file_suffix": "_1CFGS",
+            "file_suffix": "_CFGS",
             "sheet": "Sheet5",
             "success": (23, 6)
         },) * 3,
@@ -258,66 +250,42 @@ GROUPS = {
     },
     "2ARI": {
         "source": ({
-            "file_suffix": "_2CFGS",
-            "sheet": "Sheet1",
+            "file_suffix": "_CFGS",
+            "sheet": "Sheet6",
             "success": (23, 6)
         },) * 3,
         "target_row": 32,
     },
     "2ALO": {
         "source": ({
-            "file_suffix": "_2CFGS",
-            "sheet": "Sheet2",
+            "file_suffix": "_CFGS",
+            "sheet": "Sheet7",
             "success": (23, 6)
         },) * 3,
         "target_row": 33,
     },
     "2GIT": {
         "source": ({
-            "file_suffix": "_2CFGS",
-            "sheet": "Sheet3",
+            "file_suffix": "_CFGS",
+            "sheet": "Sheet8",
             "success": (23, 6)
         },) * 3,
         "target_row": 34,
     },
     "2ASR": {
         "source": ({
-            "file_suffix": "_2CFGS",
-            "sheet": "Sheet4",
+            "file_suffix": "_CFGS",
+            "sheet": "Sheet9",
             "success": (24, 6)
         },) * 3,
         "target_row": 35,
     },
     "2DAW": {
         "source": ({
-            "file_suffix": "_2CFGS",
-            "sheet": "Sheet5",
+            "file_suffix": "_CFGS",
+            "sheet": "Sheet10",
             "success": (23, 6)
         },) * 3,
         "target_row": 36,
     },
-    "1DAM": {
-        "source": (None, None, {
-            "file_suffix": "_12DAM",
-            "sheet": "Sheet1",
-            "success": (20, 6)
-        }),
-        "target_row": 37,
-    },
-    "2DAM": {
-        "source": (None, None, {
-            "file_suffix": "_12DAM",
-            "sheet": "Sheet2",
-            "success": (21, 6)
-        }),
-        "target_row": 38,
-    },
-    "3DAM": {
-        "source": (None, None, {
-            "file_suffix": "_3DAM",
-            "sheet": "InformeRendimientoEscolar",
-            "success": (22, 6)
-        }),
-        "target_row": 39,
-    }
 }
