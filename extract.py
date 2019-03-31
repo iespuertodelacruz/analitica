@@ -11,8 +11,6 @@ Options:
                     [default: all]
 """
 from docopt import docopt
-import xlrd
-import config
 import os
 import openpyxl
 import pyexcel_ods
@@ -21,7 +19,7 @@ import logging
 import PyPDF2
 import re
 import sys
-import utils
+from pathlib import Path
 
 
 logger = logging.getLogger(__name__)
@@ -43,44 +41,73 @@ class DataLoader:
         self.path_target = os.path.join("data", f"{year}.xlsx")
         self.wb = openpyxl.load_workbook(self.path_target)
         self.sh = self.wb[evaluation]
+        self._load_groups()
+        self._load_columns()
+
+    def _load_groups(self):
+        self.groups = {}
+        for i, row in enumerate(self.sh):
+            if row[0].value == 'grupo':
+                continue
+            self.groups[row[0].value] = i + 1
+
+    def _load_columns(self):
+        self.columns = {
+            'grupo': 1,
+            'etapa': 2,
+            'éxito': 3,
+            'absentismo_justificado': 4,
+            'absentismo_injustificado': 5,
+            'partes': 6,
+            'suspensión_asistencia': 7,
+            'ratio': 8
+        }
+
+    def _get_target_cell(self, group, column):
+        return self.groups[group], self.columns[column]
+
+    def _set_target_value(self, group, column, value):
+        cell = self._get_target_cell(group, column)
+        self.sh.cell(*cell, value)
+
+    def _grab_group_academics(self, academics):
+        fields = academics.split(';')
+        group = fields[4][1:-1]
+        if group not in self.groups.keys():
+            logger.warning((f"Grupo '{group}' no encontrado en "
+                            "el fichero de configuración"))
+            return
+        success_abs = int(fields[5][1:-1])
+        success_pct = float(fields[6][1:-1].replace(',', '.'))
+        ratio = round(success_abs * 100 / success_pct)
+
+        self._set_target_value(group, 'éxito', success_pct)
+        self._set_target_value(group, 'ratio', ratio)
 
     def load_academic(self):
         logger.info("Cargando información de rendimiento...")
-        for group, value in config.GROUPS.items():
-            # source
-            source = value["source"][self.eval_index]
-            if not source:
-                continue
-            filename = f"{self.basename}{source['file_suffix']}.xls"
-            path = os.path.join("data_tmp", filename)
-            try:
-                wb = xlrd.open_workbook(path)
-            except FileNotFoundError:
-                logger.error(f"No se encuentra el fichero '{path}'")
-                sys.exit()
-            sheet_name = source["sheet"]
-            sh = wb.sheet_by_name(sheet_name)
-            success = sh.cell_value(*source["success"])
-            # ratio
-            ratio_row = source["success"][0]
-            ratio_col = source["success"][1] - 2
-            ratio = 0
-            for i in range(ratio_row, ratio_row + 5):
-                try:
-                    value = sh.cell_value(i, ratio_col)
-                    ratio += float(value)
-                except ValueError:
-                    logger.error(
-                        (f'El valor "{value}" en ({i}, {ratio_col}) de '
-                         f'{sheet_name} en {filename} no parece correcto!')
-                    )
-                    sys.exit()
-            # target
-            c = utils.get_target_cell(group, "success")
-            self.sh[c] = f"{success:.2f}"
-            c = utils.get_target_cell(group, "ratio")
-            self.sh[c] = ratio
+        for file in Path('./data_tmp').glob('*.csv'):
+            with open(file, encoding='ISO-8859-1') as f:
+                for line in f.readlines():
+                    if re.search('0 suspensos', line):
+                        self._grab_group_academics(line)
         self.wb.save(self.path_target)
+
+    def _grab_group_cohabitation(self, cohabitation):
+        group = cohabitation[0]
+        if group not in self.groups.keys():
+            logger.warning((f"Grupo '{group}' no encontrado en "
+                            "el fichero de configuración"))
+            return
+        if len(cohabitation) > 1:
+            reports = int(cohabitation[1])
+            if reports > 0:
+                self._set_target_value(group, 'partes', reports)
+        if len(cohabitation) > 2:
+            non_attendance = int(cohabitation[2])
+            if non_attendance > 0:
+                self._set_target_value(group, 'suspensión_asistencia',
+                                       non_attendance)
 
     def load_cohabitation(self):
         logger.info("Cargando información de convivencia...")
@@ -93,21 +120,26 @@ class DataLoader:
             sys.exit()
         data = list(data.values())[0]
         for row in data:
-            group = row[0]
-            if group not in config.GROUPS.keys():
-                logger.warning(f"Grupo '{group}' no encontrado...")
-            else:
-                if len(row) > 1:
-                    reports = int(row[1])
-                    if reports > 0:
-                        c = utils.get_target_cell(group, "reports")
-                        self.sh[c] = reports
-                if len(row) > 2:
-                    non_attendance = int(row[2])
-                    if non_attendance > 0:
-                        c = utils.get_target_cell(group, "non_attendance")
-                        self.sh[c] = non_attendance
+            if row:
+                self._grab_group_cohabitation(row)
         self.wb.save(self.path_target)
+
+    def _grab_group_absence(self, absence, page):
+        group = absence.groups()[0]
+        if group not in self.groups.keys():
+            logger.warning((f"Grupo '{group}' no encontrado en "
+                            "el fichero de configuración"))
+            return
+        r = re.search(r"\(SI\)(\d+,\d\d)(\d+,\d\d).*MOTIVOS", page)
+        if r:
+            justified_absence = \
+                float(r.groups()[0].replace(",", "."))
+            unjustified_absence = \
+                float(r.groups()[1].replace(",", "."))
+            self._set_target_value(group, 'absentismo_justificado',
+                                   justified_absence)
+            self._set_target_value(group, 'absentismo_injustificado',
+                                   unjustified_absence)
 
     def load_absence(self):
         logger.info("Cargando información de absentismo...")
@@ -122,25 +154,7 @@ class DataLoader:
             text = page.extractText()
             r = re.search(r"Grupo:([\dA-Z]+)", text)
             if r:
-                group = r.groups()[0]
-                if group not in config.GROUPS.keys():
-                    logger.warning((f"Grupo '{group}' no encontrado en "
-                                    "el fichero de configuración"))
-                    continue
-                if not config.GROUPS[group]['source'][self.eval_index]:
-                    logger.warning((f"Ignorando '{group}' al no estar definido"
-                                    " para esta evaluación"))
-                    continue
-                r = re.search(r"\(SI\)(\d+,\d\d)(\d+,\d\d).*MOTIVOS", text)
-                if r:
-                    justified_absence = \
-                        float(r.groups()[0].replace(",", "."))
-                    unjustified_absence = \
-                        float(r.groups()[1].replace(",", "."))
-                    c = utils.get_target_cell(group, "justified_absence")
-                    self.sh[c] = f"{justified_absence:.2f}"
-                    c = utils.get_target_cell(group, "unjustified_absence")
-                    self.sh[c] = f"{unjustified_absence:.2f}"
+                self._grab_group_absence(r, text)
         self.wb.save(self.path_target)
 
 

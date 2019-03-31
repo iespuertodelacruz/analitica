@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 docopt = "*"
 jupyter = "*"
-xlrd = "*"
 openpyxl = "*"
 pyexcel-ods = "*"
 coloredlogs = "*"

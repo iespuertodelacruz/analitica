@@ -2,7 +2,7 @@
 
 Informes hechos en Python para el análisis trimestral de rendimiento, absentismo, convivencia y otros aspectos del **IES Puerto de la Cruz - Telesforo Bravo**.
 
-## Extracción de información
+## Preparación del fichero de destino
 
 El formato final de información con el que trabajan los Python notebooks es un fichero tipo `.xlsx` y están en la carpeta `data`:
 
@@ -13,21 +13,22 @@ data
 └── C1718.xlsx
 ~~~
 
-Cada fichero de estos tendrá tres *hojas* cada una con la nomenclatura `E1`, `E2` y `E3` representando las tres evaluaciones. Pero antes de llegar a esos ficheros, hay que extraer la información de varias fuentes: rendimiento, absentismo y convivencia.
+Cada fichero de estos tendrá tres *hojas* cada una con la nomenclatura `E1`, `E2` y `E3` representando las tres evaluaciones. En cada hoja habrá que cumplimentar las dos primera columnas:
+- **grupo**: nombres de los grupos con los que queremos trabajar en la evaluación en cuestión.
+- **etapa**: nombre de la enseñanza de cada grupo. Una forma de agrupar los datos en el análisis posterior.
+
+Pero antes de llegar a esos ficheros, hay que **extraer la información** de varias fuentes: rendimiento, absentismo y convivencia.
 
 ### Rendimiento
 
-Se espera que hayan ficheros de rendimiento en la carpeta `data_tmp` con la siguiente nomenclatura:
+Se espera que hayan **ficheros .csv** de rendimiento en la carpeta `data_tmp` con la siguiente nomenclatura:
 
 #### Primera evaluación
 
 ~~~
 data_tmp
-├── C1718E1_1CFGM.xls
-├── C1718E1_1CFGS.xls
-├── C1718E1_2CFGM.xls
-├── C1718E1_2CFGS.xls
-├── C1718E1_3DAM.xls
+├── C1718E1_CFGM.xls
+├── C1718E1_CFGS.xls
 ├── C1718E1_BACH.xls
 ├── C1718E1_ESO.xls
 └── C1718E1_FPB.xls
@@ -66,7 +67,7 @@ data_tmp
 - `C1718`: indica el curso **2017/2018**
 - `E1, E2, E3`: indica que es la **1ª, 2ª o 3ª evaluación**
 
-> NOTA: Estos ficheros salen directamente de Pincel EKADE desde la opción de *"estadísticas de rendimiento"*.
+> NOTA: Estos ficheros salen directamente de Pincel EKADE desde la opción de *"estadísticas de rendimiento"*. **OJO:** activar la opción de `.csv`
 
 ### Absentismo
 
@@ -116,27 +117,15 @@ Donde:
 - La segunda columna son los partes de gestión en dicha evaluación.
 - La tercera columna son los partes de gestión con suspensión del derecho de asistencia al centro en dicha evaluación.
 
-> NOTA: Este fichero se debe generar "a mano" a través de un recuento de los partes físicos existentes en la jefatura de estudios.
+#### Observaciones
 
-> No es necesario que aparezcan todos los grupos. Si no tienen partes de gestión ni siquiera es necesario que existan en el fichero.
+- Este fichero se debe generar "a mano" a través de un recuento de los partes físicos existentes en la jefatura de estudios.
+- No poner nombres de columnas en la primera fila.
+- No es necesario que aparezcan todos los grupos. Si no tienen partes de gestión ni siquiera es necesario que existan en el fichero.
+- Sólo se tendrá en cuenta la primera hoja (*sheet*) del fichero.
 
 ### Lanzar la extracción de información
 
-#### Fichero excel de destino
-
-En primer lugar hay que limpiar la hoja de la evaluación correspondiente del fichero `data/CXXYY.xlsx`, ajustando los grupos correspondientes a cada curso escolar y **dejando intactas las dos primeras columnas de `grupo` y `etapa`**.
-
-#### `config.py`
-
-En este fichero se establecen las filas y columnas de referencia del éxito escolar en la clave `success`. Coincide con la fila **0 suspensos** y la columna **\%** de los ficheros de rendimiento escolar que salen del EKADE.
-
-Las filas y columnas son **en base 0** y en caso de que hubieran dos filas o columnas fusionadas hay que quedarse con el índice de la primera de ellas.
-
-> Para poder ver en el **EXCEL** las etiquetas de columnas de forma numérica en vez de con letras, basta con ir a `Preferencias -> General -> Usar estilo de referencia F1C1`.
-
-Tener cuidado también con la clave `sheet` del fichero de configuración `config.py` que establece el nombre de *hoja de cálculo* donde se encuentran los datos.
-
-#### Lanzar la extracción
 
 Activar el entorno virtual y ejecutar:
 
