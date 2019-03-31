@@ -12,6 +12,7 @@ coloredlogs = "*"
 "pypdf2" = "*"
 pandas = "*"
 seaborn = "*"
+xlrd = "*"
 
 [dev-packages]
 "flake8" = "*"
