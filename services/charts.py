@@ -131,7 +131,7 @@ def rgb_heatmap(data):
         'blue': ((0.0, 0.0, 0.0), (1.0, 0.0, 0.0))
     }
 
-    plt.figure(figsize=(5, 5), dpi=FIGURE_DPI * 2)
+    plt.figure(figsize=(5, 5), dpi=FIGURE_DPI * 1.5)
     cmap = LinearSegmentedColormap('custom_cmap', cdict, 4)
     sns.heatmap(data, annot=True, cmap=cmap, center=5)
     # hide axis labels
