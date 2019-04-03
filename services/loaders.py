@@ -95,7 +95,9 @@ def load_data(year, evaluation):
                                  inplace=True)
 
             # Loading basic competences
-            partial_df_bc = load_bc('../data/ccbb/C1819E2_ESO_CCBB.csv')
+            filename_bc = year_label + evaluation_label + '_ESO_CCBB.csv'
+            path_bc = os.path.join('../data/ccbb', filename_bc)
+            partial_df_bc = load_bc(path_bc)
             partial_df_bc['curso'] = year_label
             partial_df_bc['evaluación'] = evaluation_label
             partial_df_bc.set_index(['curso', 'evaluación', 'grupo'],
