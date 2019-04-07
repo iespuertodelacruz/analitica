@@ -188,3 +188,16 @@ def magic_groups(data):
     ax2.set(ylabel='', xlabel='')
     ax2.legend(loc='best', frameon=True, framealpha=0.9)
     plt.close(g.fig)
+
+
+def pcei_chart(data):
+    plt.subplots(figsize=(5, 5), dpi=FIGURE_DPI)
+    ax = sns.barplot(
+        x="grupo",
+        y="personas",
+        hue="calificación",
+        data=data,
+        palette='Greens')
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    ax.yaxis.set_ticks(range(0, max(data['personas']) + 4, 2))
+    sns.despine(left=True)

@@ -149,6 +149,20 @@ data/ccbb
 
 **OJO! Este fichero va en la carpeta `data/ccbb` NO en la carpeta `data_tmp`**
 
+## Pruebas de certificación para población escolar
+
+Las [PCEI](http://www.gobiernodecanarias.org/educacion/web/idiomas/pruebas_certificacion/pruebas_certificacion_poblacion_escolar/) suelen ser en el mes de marzo. En el caso de que las pruebas hayan finalizado y las calificaciones estén puestas en PINCEL EKADE, se podrá obtener el fichero `.csv` de estadísticas.
+
+Si este es el caso, se espera tener un fichero en la siguiente ruta:
+
+~~~
+data/pcei
+└── C1819_PCEI.csv
+~~~
+
+- `C1819`: indica el curso **2018/2019**
+
+
 ## Creación del notebook
 
 Para cada evaluación se debe crear un nuevo Jupyter Notebook. Supongamos que vamos a analizar la tercera evaluación del curso 2017-2018. Haremos lo siguiente:
