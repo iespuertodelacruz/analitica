@@ -13,6 +13,7 @@ coloredlogs = "*"
 pandas = "*"
 seaborn = "*"
 xlrd = "*"
+prettyconf = "*"
 
 [dev-packages]
 "flake8" = "*"

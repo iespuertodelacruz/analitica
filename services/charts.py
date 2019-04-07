@@ -3,8 +3,9 @@ import seaborn as sns
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 import pandas as pd
+from prettyconf import config
 
-FIGURE_DPI = 72
+FIGURE_DPI = config('FIGURE_DPI', default=72, cast=int)
 
 sns.set(style='whitegrid')
 
