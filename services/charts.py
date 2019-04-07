@@ -9,6 +9,12 @@ FIGURE_DPI = 72
 sns.set(style='whitegrid')
 
 
+def set_custom_style(context='notebook'):
+    sns.set()
+    sns.set(style='whitegrid')
+    sns.set_context(context)
+
+
 def makeup_chart(fontsize, value_margin, is_percentage, show_integer):
     if is_percentage:
         percentage_symbol = '%'
@@ -124,16 +130,16 @@ def stacked_chart(data, y, x1, x2, x1_label=None, x2_label=None):
     sns.despine()
 
 
-def rgb_heatmap(data):
+def rgb_heatmap(data, center=5):
     cdict = {
         'red': ((0.0, 1.0, 0.7), (0.5, 1.0, 0.7), (1.0, 0.0, 0.0)),
         'green': ((0.0, 0.0, 0.0), (0.5, 1.0, 0.4), (1.0, 1.0, 0.4)),
         'blue': ((0.0, 0.0, 0.0), (1.0, 0.0, 0.0))
     }
 
-    plt.figure(figsize=(5, 5), dpi=FIGURE_DPI * 1.5)
+    plt.figure(figsize=(5, 5), dpi=FIGURE_DPI)
     cmap = LinearSegmentedColormap('custom_cmap', cdict, 4)
-    sns.heatmap(data, annot=True, cmap=cmap, center=5)
+    sns.heatmap(data, annot=True, cmap=cmap, center=center)
     # hide axis labels
     plt.xlabel('')
     plt.ylabel('')
@@ -142,9 +148,23 @@ def rgb_heatmap(data):
                     right=False, labelleft=True, labelbottom=True)
 
 
+def bc_evolution_chart(data):
+    plt.figure(figsize=(5, 5), dpi=FIGURE_DPI)
+    sns.lineplot(
+        x='curso',
+        y='marca',
+        hue='item',
+        markers=True,
+        style='item',
+        dashes=False,
+        data=data)
+    plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+    sns.despine(left=True)
+
+
 def magic_groups(data):
     fig, (ax1, ax2) = plt.subplots(
-        1, 2, figsize=(15, 5), sharey=True, dpi=2 * FIGURE_DPI)
+        1, 2, figsize=(15, 5), sharey=True, dpi=FIGURE_DPI)
 
     best_magic = pd.melt(
         data.head(5).reset_index(),
