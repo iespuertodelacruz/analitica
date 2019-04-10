@@ -7,3 +7,4 @@ data_tmp
 *.pyc
 .vscode
 .env
+C*/*.html

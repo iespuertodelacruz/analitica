@@ -178,3 +178,13 @@ $ jupyter notebook
 ~~~
 
 A partir de aquí modificar las cosas necesarios en el nuevo Jupyter Notebook.
+
+## Conversión del notebook a *html*
+
+Ejemplo para convertir el notebook de la segunda evaluación del curso 2018-2019:
+
+~~~console
+$ ipy2html.sh C1819/E2.ipynb
+~~~
+
+> Este comando genera un fichero `C1819/E2.html` con el *"render"* y los gráficos del notebook.
