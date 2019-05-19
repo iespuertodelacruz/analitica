@@ -93,6 +93,9 @@ def load_data(year, evaluation):
                 partial_df['ratio'] * (partial_df['éxito'] / 100))
             partial_df.set_index(['curso', 'evaluación', 'grupo'],
                                  inplace=True)
+            # null values
+            partial_df['partes'].fillna(0, inplace=True)
+            partial_df['suspensión_asistencia'].fillna(0, inplace=True)
 
             # Loading basic competences
             filename_bc = year_label + evaluation_label + '_ESO_CCBB.csv'
@@ -119,9 +122,6 @@ def load_data(year, evaluation):
             df_bc = df_bc.append(partial_df_bc)
 
             labels.append((year_label, evaluation_label))
-
-    df.fillna(0, inplace=True)
-    df_bc.fillna(0, inplace=True)
 
     return df, df_bc, labels
 
