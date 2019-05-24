@@ -140,3 +140,33 @@ def scatter(xi, y, dot_labels, x_title=None, y_title=None):
 
     fig = go.Figure(data=data, layout=layout)
     iplot(fig)
+
+
+def dbar(x_values,
+         y_values,
+         title='',
+         is_percentage=True,
+         inverted_colors=False):
+
+    invf = -1 if inverted_colors else 1
+    trace_config = {
+        'x': x_values,
+        'y': y_values,
+        'marker': {
+            'color':
+            y_values.apply(lambda x: 'green' if x * invf >= 0 else 'red'),
+        }
+    }
+    if is_percentage:
+        trace_config['text'] = [f'{y:.2f}%' for y in y_values]
+        trace_config['hoverinfo'] = 'x + text'
+    trace = go.Bar(trace_config)
+
+    layout = go.Layout(
+        title=title
+    )
+
+    data = [trace]
+
+    fig = go.Figure(data=data, layout=layout)
+    iplot(fig)
