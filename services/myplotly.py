@@ -186,7 +186,7 @@ def bc_bar(df):
 
     trace_colors = dict(
         zip(['PA', 'AD', 'MA', 'EX'], cl.scales['4']['div']['Spectral']))
-    plot_num_cols = 2
+    plot_num_cols = 3
     plot_num_rows = levels.size // plot_num_cols
     subplot_ids = list(
         itertools.product(
