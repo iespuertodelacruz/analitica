@@ -19,6 +19,7 @@ def hbar(x_values,
          colors=None,
          title='',
          fig_size=(700, 1000)):
+    ''' Horizontal stacked barchart '''
     if trace_names is None:
         trace_names = [x.name for x in x_values]
     if colors is None:
@@ -56,6 +57,7 @@ def bar_simple(x_values,
                title='',
                colormap='Greens',
                is_percentage=True):
+    ''' Barchart with single bars '''
 
     cs = cl.scales['5']['seq'][colormap][1:]
     ls = np.linspace(0, 1, len(cs))
@@ -84,7 +86,8 @@ def bar_simple(x_values,
     iplot(fig)
 
 
-def cbar(x_labels, series, is_percentage=True):
+def cbar(x_labels, series, is_percentage=True, barmode='group'):
+    ''' Barchart with multiple bars '''
     data = []
     for name, values in series.items():
         trace_config = {
@@ -98,15 +101,13 @@ def cbar(x_labels, series, is_percentage=True):
         trace = go.Bar(trace_config)
         data.append(trace)
 
-    layout = go.Layout(
-        barmode='group'
-    )
-
+    layout = go.Layout(barmode=barmode)
     fig = go.Figure(data=data, layout=layout)
     iplot(fig)
 
 
 def scatter(xi, y, dot_labels, x_title=None, y_title=None):
+    ''' Scatter plot with regression line '''
     # get lineal regression
     slope, intercept, r_value, p_value, std_err = stats.linregress(xi, y)
     line = slope*xi + intercept
@@ -153,6 +154,7 @@ def dbar(x_values,
          title='',
          is_percentage=True,
          inverted_colors=False):
+    ''' Barchart for displaying deltas (differences) '''
 
     invf = -1 if inverted_colors else 1
     trace_config = {
@@ -230,6 +232,7 @@ def bc_bar(df):
 
 
 def heatmap(x_values, y_values, z_values, colorscale, width=600, height=600):
+    ''' Heatmap '''
     trace = go.Heatmap(
         x=x_values,
         y=y_values,
