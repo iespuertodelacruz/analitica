@@ -1,5 +1,9 @@
+import itertools
+
 import colorlover as cl
 import numpy as np
+import pandas as pd
+import plotly
 import plotly.graph_objs as go
 from plotly.offline import init_notebook_mode, iplot
 from scipy import stats
@@ -169,4 +173,55 @@ def dbar(x_values,
     data = [trace]
 
     fig = go.Figure(data=data, layout=layout)
+    iplot(fig)
+
+
+def bc_bar(df):
+    ''' Barplot for comparing acquisition of basic competences '''
+    levels = pd.unique(df['nivel'])
+
+    trace_colors = dict(
+        zip(['PA', 'AD', 'MA', 'EX'], cl.scales['4']['div']['Spectral']))
+    plot_num_cols = 2
+    plot_num_rows = levels.size // plot_num_cols
+    subplot_ids = list(
+        itertools.product(
+            range(1, plot_num_rows + 1), range(1, plot_num_cols + 1)))
+
+    fig = plotly.tools.make_subplots(
+        rows=plot_num_rows,
+        cols=plot_num_cols,
+        subplot_titles=levels,
+        shared_yaxes=True,
+        print_grid=False)
+
+    for i, level in enumerate(levels):
+        aux = df.groupby(['nivel', 'item']).mean().loc[level].drop(
+            'marca', axis=1).to_dict()
+
+        for bc_acq_label, bc_acq_data in aux.items():
+            x_values = list(bc_acq_data.keys())
+            y_values = list(bc_acq_data.values())
+            trace_config = {
+                'x': x_values,
+                'y': y_values,
+                'name': bc_acq_label,
+                'legendgroup': bc_acq_label,
+                'marker': {
+                    'color': trace_colors[bc_acq_label]
+                },
+                'text': [f'{y:.2f}%' for y in y_values],
+                'hoverinfo': 'x + text + name'
+            }
+            if i > 0:
+                trace_config['showlegend'] = False
+            trace = go.Bar(trace_config)
+            fig.append_trace(trace, *subplot_ids[i])
+
+    layout = go.Layout(
+        barmode='group',
+        height=800
+    )
+
+    fig.layout.update(layout)
     iplot(fig)
