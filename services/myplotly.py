@@ -240,3 +240,32 @@ def heatmap(x_values, y_values, z_values, colorscale, width=600, height=600):
     layout = go.Layout(width=width, height=height)
     fig = go.Figure(data=data, layout=layout)
     iplot(fig)
+
+
+def bc_evolution(df):
+    ''' Lineplot for showing evolution of basic competences acquisition '''
+    items = np.sort(pd.unique(df['item']))
+
+    data = []
+    for item in items:
+        aux = df.groupby(['curso',
+                          'item']).mean().swaplevel().loc[item]['marca']
+        trace = go.Scatter(
+            x=aux.index,
+            y=aux.values,
+            name=item,
+            text=utils.format_value(aux.values, is_percentage=False),
+            hoverinfo='x+name+text',
+            line={'width': 3},
+            marker={'size': 8})
+        data.append(trace)
+
+    layout = {
+        'xaxis': {'title': 'Curso escolar'},
+        'yaxis': {'title': 'Valoración CCBB'},
+        'width': 600,
+        'height': 600
+    }
+
+    fig = dict(data=data, layout=layout)
+    iplot(fig)
