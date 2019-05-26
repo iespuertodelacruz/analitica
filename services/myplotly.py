@@ -8,6 +8,8 @@ import plotly.graph_objs as go
 from plotly.offline import init_notebook_mode, iplot
 from scipy import stats
 
+from . import utils
+
 init_notebook_mode(connected=True)
 
 
@@ -68,7 +70,7 @@ def bar_simple(x_values,
         }
     }
     if is_percentage:
-        trace_config['text'] = [f'{y:.2f}%' for y in y_values]
+        trace_config['text'] = utils.format_value(y_values)
         trace_config['hoverinfo'] = 'x + text'
     trace = go.Bar(trace_config)
 
@@ -91,7 +93,7 @@ def cbar(x_labels, series, is_percentage=True):
             'name': name,
         }
         if is_percentage:
-            trace_config['text'] = [f'{y:.2f}%' for y in values]
+            trace_config['text'] = utils.format_value(values)
             trace_config['hoverinfo'] = 'x + text + name'
         trace = go.Bar(trace_config)
         data.append(trace)
@@ -162,7 +164,7 @@ def dbar(x_values,
         }
     }
     if is_percentage:
-        trace_config['text'] = [f'{y:.2f}%' for y in y_values]
+        trace_config['text'] = utils.format_value(y_values)
         trace_config['hoverinfo'] = 'x + text'
     trace = go.Bar(trace_config)
 
@@ -210,7 +212,7 @@ def bc_bar(df):
                 'marker': {
                     'color': trace_colors[bc_acq_label]
                 },
-                'text': [f'{y:.2f}%' for y in y_values],
+                'text': utils.format_value(y_values),
                 'hoverinfo': 'x + text + name'
             }
             if i > 0:
@@ -224,4 +226,17 @@ def bc_bar(df):
     )
 
     fig.layout.update(layout)
+    iplot(fig)
+
+
+def heatmap(x_values, y_values, z_values, colorscale, width=600, height=600):
+    trace = go.Heatmap(
+        x=x_values,
+        y=y_values,
+        z=z_values,
+        colorscale=colorscale,
+        colorbar={'ticks': 'outside'})
+    data = [trace]
+    layout = go.Layout(width=width, height=height)
+    fig = go.Figure(data=data, layout=layout)
     iplot(fig)
