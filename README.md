@@ -89,6 +89,7 @@ data_tmp
 - "Selección del período":
     - Desde: `01/09/<año>`
     - Hasta: `<Fecha de finalización del trimestre de estudio>`
+- No marcar los grupos de *certificación de inglés para población escolar*.
 
 ### Convivencia
 
