@@ -27,41 +27,41 @@ Se espera que hayan **ficheros .csv** de rendimiento en la carpeta `data_tmp` co
 
 ~~~
 data_tmp
-├── C1718E1_CFGM.xls
-├── C1718E1_CFGS.xls
-├── C1718E1_BACH.xls
-├── C1718E1_ESO.xls
-└── C1718E1_FPB.xls
+├── C1718E1_CFGM.csv
+├── C1718E1_CFGS.csv
+├── C1718E1_BACH.csv
+├── C1718E1_ESO.csv
+└── C1718E1_FPB.csv
 ~~~
 
 #### Segunda evaluación
 
 ~~~
 data_tmp
-├── C1718E2_1CFGM.xls
-├── C1718E2_1CFGS.xls
-├── C1718E2_2CFGM.xls
-├── C1718E2_2CFGS.xls
-├── C1718E2_3DAM.xls
-├── C1718E2_BACH.xls
-├── C1718E2_ESO.xls
-└── C1718E2_FPB.xls
+├── C1718E2_1CFGM.csv
+├── C1718E2_1CFGS.csv
+├── C1718E2_2CFGM.csv
+├── C1718E2_2CFGS.csv
+├── C1718E2_3DAM.csv
+├── C1718E2_BACH.csv
+├── C1718E2_ESO.csv
+└── C1718E2_FPB.csv
 ~~~
 
 #### Tercera evaluación
 
 ~~~
 data_tmp
-├── C1718E3_12DAM.xls   # 1º y 2º de DAM
-├── C1718E3_1CFGM.xls
-├── C1718E3_1CFGS.xls
-├── C1718E3_1FPB.xls
-├── C1718E3_2CFGM.xls
-├── C1718E3_2CFGS.xls
-├── C1718E3_2FPB.xls
-├── C1718E3_3DAM.xls
-├── C1718E3_BACH.xls
-└── C1718E3_ESO.xls
+├── C1718E3_12DAM.csv   # 1º y 2º de DAM
+├── C1718E3_1CFGM.csv
+├── C1718E3_1CFGS.csv
+├── C1718E3_1FPB.csv
+├── C1718E3_2CFGM.csv
+├── C1718E3_2CFGS.csv
+├── C1718E3_2FPB.csv
+├── C1718E3_3DAM.csv
+├── C1718E3_BACH.csv
+└── C1718E3_ESO.csv
 ~~~
 
 - `C1718`: indica el curso **2017/2018**
@@ -85,7 +85,7 @@ data_tmp
 
 > NOTA: Este fichero sale directamente de Pincel EKADE desde la opción *"Informe de absentismo por grupos clase"*. **No olvidarse de marcar las siguientes opciones:**
 
-- "Por grupo en distintas páginas"
+- "Por grupo en páginas distintas"
 - "Selección del período":
     - Desde: `01/09/<año>`
     - Hasta: `<Fecha de finalización del trimestre de estudio>`
