@@ -56,18 +56,25 @@ def bar_simple(x_values,
                y_values,
                title='',
                colormap='Greens',
-               is_percentage=True):
+               is_percentage=True,
+               yaxis_range=None,
+               mark_colors=False):
     ''' Barchart with single bars '''
 
-    cs = cl.scales['5']['seq'][colormap][1:]
-    ls = np.linspace(0, 1, len(cs))
-    colorscale = list(zip(ls, cs))
+    if mark_colors:
+        colors = y_values.apply(lambda x: 'green' if x >= 5 else 'red')
+        colorscale = None
+    else:
+        colors = y_values
+        cs = cl.scales['5']['seq'][colormap][1:]
+        ls = np.linspace(0, 1, len(cs))
+        colorscale = list(zip(ls, cs))
 
     trace_config = {
         'x': x_values,
         'y': y_values,
         'marker': {
-            'color': y_values,
+            'color': colors,
             'colorscale': colorscale
         }
     }
@@ -77,7 +84,8 @@ def bar_simple(x_values,
     trace = go.Bar(trace_config)
 
     layout = go.Layout(
-        title=title
+        title=title,
+        yaxis={'range': yaxis_range}
     )
 
     data = [trace]
