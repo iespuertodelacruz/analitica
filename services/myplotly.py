@@ -280,3 +280,52 @@ def bc_evolution(df):
 
     fig = dict(data=data, layout=layout)
     iplot(fig)
+
+
+def bc_extremes(df):
+    ''' Plot miminum and maximum marks of basic competences for each group '''
+
+    # build data series
+    worst_marked = {'items': [], 'marks': []}
+    best_marked = {'items': [], 'marks': []}
+    groups = df.index.unique()
+    for group in groups:
+        aux = df.loc[group].reset_index()
+        row_min = aux.loc[aux['marca'].idxmin()]
+        worst_marked['items'].append(row_min['item'])
+        worst_marked['marks'].append(row_min['marca'])
+        row_max = aux.loc[aux['marca'].idxmax()]
+        best_marked['items'].append(row_max['item'])
+        best_marked['marks'].append(row_max['marca'])
+
+    # build traces
+    trace1 = go.Scatter(
+        x=groups,
+        y=best_marked['items'],
+        mode='markers',
+        text=np.around(best_marked['marks'], decimals=2),
+        marker=dict(size=np.array(best_marked['marks']) * 3),
+        marker_color='green',
+        name='Mejor valoración'
+    )
+    trace2 = go.Scatter(
+        x=groups,
+        y=worst_marked['items'],
+        mode='markers',
+        text=np.around(worst_marked['marks'], decimals=2),
+        marker=dict(size=np.array(worst_marked['marks']) * 3),
+        marker_color='red',
+        name='Peor valoración'
+    )
+
+    # plot data
+    data = [trace1, trace2]
+
+    layout = go.Layout(
+        hovermode='closest',
+        width=600,
+        height=600,
+    )
+
+    fig = go.Figure(data=data, layout=layout)
+    iplot(fig)
