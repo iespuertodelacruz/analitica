@@ -331,24 +331,31 @@ def bc_extremes(df):
     iplot(fig)
 
 
-def num_students_evolution(df, stages, years):
+def num_students_evolution(df, stages, years, ratio=False):
     ''' Lineplot for showing evolution of number of students '''
+
+    if ratio:
+        agg_func, ytitle = 'mean', 'Ratio'
+    else:
+        agg_func, ytitle = 'sum', 'Núm. alumnado'
 
     data = []
     for stage in stages:
         values = df.query(f'etapa == "{stage}"').groupby(
-            'curso').sum()['ratio'].values
+            'curso').agg({'ratio': agg_func})['ratio'].values
         data.append(go.Scatter(
             x=years,
             y=values,
             name=stage,
+            text=np.around(values, decimals=2),
+            hoverinfo='name+text',
             line={'width': 3},
             marker={'size': 8}
         ))
 
     layout = {
         'xaxis': {'title': 'Curso escolar'},
-        'yaxis': {'title': 'Núm. Alumnado'},
+        'yaxis': {'title': ytitle},
         'width': 700,
         'height': 500
     }
