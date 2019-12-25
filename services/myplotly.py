@@ -329,3 +329,29 @@ def bc_extremes(df):
 
     fig = go.Figure(data=data, layout=layout)
     iplot(fig)
+
+
+def num_students_evolution(df, stages, years):
+    ''' Lineplot for showing evolution of number of students '''
+
+    data = []
+    for stage in stages:
+        values = df.query(f'etapa == "{stage}"').groupby(
+            'curso').sum()['ratio'].values
+        data.append(go.Scatter(
+            x=years,
+            y=values,
+            name=stage,
+            line={'width': 3},
+            marker={'size': 8}
+        ))
+
+    layout = {
+        'xaxis': {'title': 'Curso escolar'},
+        'yaxis': {'title': 'Núm. Alumnado'},
+        'width': 700,
+        'height': 500
+    }
+
+    fig = dict(data=data, layout=layout)
+    iplot(fig)
