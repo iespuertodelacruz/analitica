@@ -1,0 +1,12 @@
+docopt
+jupyter
+openpyxl
+pyexcel-ods
+coloredlogs
+pypdf2
+pandas
+seaborn
+xlrd
+prettyconf
+plotly
+colorlover
