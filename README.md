@@ -27,41 +27,41 @@ Se espera que hayan **ficheros .csv** de rendimiento en la carpeta `data_tmp` co
 
 ~~~
 data_tmp
-├── C1718E1_CFGM.csv
-├── C1718E1_CFGS.csv
-├── C1718E1_BACH.csv
-├── C1718E1_ESO.csv
-└── C1718E1_FPB.csv
+├── C1718E1_CFGM.csv  # 1ª evaluación parcial
+├── C1718E1_CFGS.csv  # 1ª evaluación parcial
+├── C1718E1_BACH.csv  # 1ª evaluación parcial
+├── C1718E1_ESO.csv   # 1ª evaluación parcial
+└── C1718E1_FPB.csv   # 1ª evaluación parcial
 ~~~
 
 #### Segunda evaluación
 
 ~~~
 data_tmp
-├── C1718E2_1CFGM.csv
-├── C1718E2_1CFGS.csv
-├── C1718E2_2CFGM.csv
-├── C1718E2_2CFGS.csv
-├── C1718E2_3DAM.csv
-├── C1718E2_BACH.csv
-├── C1718E2_ESO.csv
-└── C1718E2_FPB.csv
+├── C1718E2_1CFGM.csv  # 2ª evaluación parcial
+├── C1718E2_1CFGS.csv  # 2ª evaluación parcial
+├── C1718E2_2CFGM.csv  # E.Final (Decisión Acc. módulos no presenciales)
+├── C1718E2_2CFGS.csv  # E.Final (Decisión Acc. módulos no presenciales)
+├── C1718E2_3DAM.csv   # E.Final (Decisión Acc. módulos no presenciales)
+├── C1718E2_BACH.csv   # 2ª evaluación parcial
+├── C1718E2_ESO.csv    # 2ª evaluación parcial
+└── C1718E2_FPB.csv    # 2ª evaluación parcial
 ~~~
 
 #### Tercera evaluación
 
 ~~~
 data_tmp
-├── C1718E3_12DAM.csv   # 1º y 2º de DAM
-├── C1718E3_1CFGM.csv
-├── C1718E3_1CFGS.csv
-├── C1718E3_1FPB.csv
-├── C1718E3_2CFGM.csv
-├── C1718E3_2CFGS.csv
-├── C1718E3_2FPB.csv
-├── C1718E3_3DAM.csv
-├── C1718E3_BACH.csv
-└── C1718E3_ESO.csv
+├── C1718E3_12DAM.csv  # Evaluación final (Ordinaria) - 1º y 2º DAM
+├── C1718E3_1CFGM.csv  # Evaluación final (Ordinaria)
+├── C1718E3_1CFGS.csv  # Evaluación final (Ordinaria)
+├── C1718E3_1FPB.csv   # Evaluación final (Ordinaria)
+├── C1718E3_2CFGM.csv  # Evaluación final de ciclo
+├── C1718E3_2CFGS.csv  # Evaluación final de ciclo
+├── C1718E3_2FPB.csv   # Evaluación final de ciclo
+├── C1718E3_3DAM.csv   # Evaluación final de ciclo
+├── C1718E3_BACH.csv   # Evaluación final (Ordinaria)
+└── C1718E3_ESO.csv    # Evaluación final (Ordinaria)
 ~~~
 
 - `C1718`: indica el curso **2017/2018**
