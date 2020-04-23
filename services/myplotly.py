@@ -5,12 +5,14 @@ import numpy as np
 import pandas as pd
 import plotly
 import plotly.graph_objs as go
+import plotly.io as pio
 from plotly.offline import init_notebook_mode, iplot
 from scipy import stats
 
 from . import utils
 
 init_notebook_mode(connected=True)
+pio.templates.default = 'plotly_white'
 
 
 def hbar(x_values,
@@ -200,7 +202,7 @@ def bc_bar(df):
         itertools.product(
             range(1, plot_num_rows + 1), range(1, plot_num_cols + 1)))
 
-    fig = plotly.tools.make_subplots(
+    fig = plotly.subplots.make_subplots(
         rows=plot_num_rows,
         cols=plot_num_cols,
         subplot_titles=levels,
