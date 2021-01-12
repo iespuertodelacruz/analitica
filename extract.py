@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 coloredlogs.install(
     fmt="%(asctime)s %(filename)s:%(lineno)d %(levelname)s %(message)s",
     level="DEBUG",
-    logger=logger
+    logger=logger,
 )
 
 
@@ -60,7 +60,7 @@ class DataLoader:
             'absentismo_injustificado': 5,
             'partes': 6,
             'suspensión_asistencia': 7,
-            'ratio': 8
+            'ratio': 8,
         }
 
     def _get_target_cell(self, group, column):
@@ -71,15 +71,20 @@ class DataLoader:
         self.sh.cell(*cell, value)
 
     def _grab_group_academics(self, academics):
-        fields = academics.split(';')
-        group = fields[4][1:-1]
+        fields = [f.strip('"') for f in academics.split(';')]
+        group = fields[3]
         if group not in self.groups.keys():
-            logger.warning((f"Grupo '{group}' no encontrado en "
-                            "el fichero de configuración"))
+            logger.warning(
+                (f"Grupo '{group}' no encontrado en " "el fichero de configuración")
+            )
             return
-        success_abs = int(fields[5][1:-1])
-        success_pct = float(fields[6][1:-1].replace(',', '.'))
-        ratio = round(success_abs * 100 / success_pct)
+        success_abs = int(fields[9])
+        success_pct = float(fields[10].replace(',', '.'))
+        try:
+            ratio = round(success_abs * 100 / success_pct)
+        except ZeroDivisionError:
+            logger.error(f"Grupo '{group}' no tiene alumnado!")
+            ratio = 0
 
         self._set_target_value(group, 'éxito', success_pct)
         self._set_target_value(group, 'ratio', ratio)
@@ -89,15 +94,16 @@ class DataLoader:
         for file in Path('./data_tmp').glob('*.csv'):
             with open(file, encoding='ISO-8859-1') as f:
                 for line in f.readlines():
-                    if re.search('0 suspensos', line):
+                    if re.search('TODO APROBADO', line):
                         self._grab_group_academics(line)
         self.wb.save(self.path_target)
 
     def _grab_group_cohabitation(self, cohabitation):
         group = cohabitation[0]
         if group not in self.groups.keys():
-            logger.warning((f"Grupo '{group}' no encontrado en "
-                            "el fichero de configuración"))
+            logger.warning(
+                (f"Grupo '{group}' no encontrado en " "el fichero de configuración")
+            )
             return
         if len(cohabitation) > 1:
             reports = int(cohabitation[1])
@@ -106,8 +112,7 @@ class DataLoader:
         if len(cohabitation) > 2:
             non_attendance = int(cohabitation[2])
             if non_attendance > 0:
-                self._set_target_value(group, 'suspensión_asistencia',
-                                       non_attendance)
+                self._set_target_value(group, 'suspensión_asistencia', non_attendance)
 
     def load_cohabitation(self):
         logger.info("Cargando información de convivencia...")
@@ -127,19 +132,16 @@ class DataLoader:
     def _grab_group_absence(self, absence, page):
         group = absence.groups()[0]
         if group not in self.groups.keys():
-            logger.warning((f"Grupo '{group}' no encontrado en "
-                            "el fichero de configuración"))
+            logger.warning(
+                (f"Grupo '{group}' no encontrado en " "el fichero de configuración")
+            )
             return
         r = re.search(r"\(SI\)(\d+,\d\d)(\d+,\d\d).*MOTIVOS", page)
         if r:
-            justified_absence = \
-                float(r.groups()[0].replace(",", "."))
-            unjustified_absence = \
-                float(r.groups()[1].replace(",", "."))
-            self._set_target_value(group, 'absentismo_justificado',
-                                   justified_absence)
-            self._set_target_value(group, 'absentismo_injustificado',
-                                   unjustified_absence)
+            justified_absence = float(r.groups()[0].replace(",", "."))
+            unjustified_absence = float(r.groups()[1].replace(",", "."))
+            self._set_target_value(group, 'absentismo_justificado', justified_absence)
+            self._set_target_value(group, 'absentismo_injustificado', unjustified_absence)
 
     def load_absence(self):
         logger.info("Cargando información de absentismo...")
