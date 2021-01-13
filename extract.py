@@ -154,7 +154,7 @@ class DataLoader:
             sys.exit()
         for page in source.pages:
             text = page.extractText()
-            r = re.search(r"Grupo:([\dA-Z]+)", text)
+            r = re.search(r"Grupo:(\S+)", text)
             if r:
                 self._grab_group_absence(r, text)
         self.wb.save(self.path_target)
