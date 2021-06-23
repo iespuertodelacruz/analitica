@@ -135,7 +135,7 @@ def scatter(xi, y, dot_labels, x_title=None, y_title=None):
         name='',
     )
 
-    trace2 = go.Scatter(x=xi, y=line, mode='lines', name=f'Regresión', hoverinfo='skip')
+    trace2 = go.Scatter(x=xi, y=line, mode='lines', name='Regresión', hoverinfo='skip')
 
     data = [trace1, trace2]
 
@@ -425,6 +425,43 @@ def total_students_teachers_evolution(students, teachers, years, students_diff=N
     iplot(fig)
 
 
+def bc_diff(df_bc_comp: pd.DataFrame):
+    '''Heatmap to show the evolution of basic competences'''
+
+    def build_colorscale(a: float, b: float, df: pd.DataFrame, extreme_ratio=0.25):
+        colors = cl.scales['4']['div']['RdYlGn']
+        if a > 0 and b > 0:
+            thresholds = [b - abs(a - b) * extreme_ratio]
+            colors = colors[2:]  # greens
+        elif a < 0 and b < 0:
+            thresholds = [a + abs(a - b) * extreme_ratio]
+            colors = colors[:2]  # reds
+        else:
+            thresholds = [a + abs(a - 0) * extreme_ratio, 0, b - abs(b - 0) * extreme_ratio]
+        thresholds = utils.normalize_thresholds(df, thresholds)
+        return utils.make_colorscale(colors, thresholds=thresholds, discrete=True)
+
+    df_bc_comp['delta'] = df_bc_comp['marca_x'] - df_bc_comp['marca_y']
+    df_bc_comp_marked = (
+        df_bc_comp.groupby(['nivel_x', 'item'])
+        .mean()
+        .reset_index()
+        .pivot('item', 'nivel_x', 'delta')
+    )
+
+    min_diff_value = df_bc_comp_marked.values.min()
+    max_diff_value = df_bc_comp_marked.values.max()
+
+    colorscale = build_colorscale(min_diff_value, max_diff_value, df_bc_comp_marked)
+
+    heatmap(
+        df_bc_comp_marked.index,
+        df_bc_comp_marked.columns,
+        df_bc_comp_marked.values.T,
+        colorscale,
+    )
+
+
 """
 # By BGD'21 (Antonio Dorta - 17/01/2021)
 # Plot the evolution of total number of students and teachers
@@ -441,7 +478,7 @@ def total_students_teachers_evolution(df, data_teachers, years):
     fig = plotly.subplots.make_subplots(specs=[[{"secondary_y": True}]])
 
     fig.add_trace(
-        go.Bar( 
+        go.Bar(
             {
                 'x': years,
                 'y': students,
@@ -450,7 +487,7 @@ def total_students_teachers_evolution(df, data_teachers, years):
                 'hoverinfo':' name+text',
             }
         ),
-        secondary_y = False 
+        secondary_y = False
     )
     fig.add_trace(
         go.Scatter(
@@ -462,16 +499,16 @@ def total_students_teachers_evolution(df, data_teachers, years):
                 'hoverinfo':' name+text',
             }
         ),
-        secondary_y = True 
+        secondary_y = True
     )
     layout = go.Layout(
         xaxis = {'title': 'Curso escolar'},
         yaxis = {'title': 'Total alumnado', 'side': 'left'},
-        yaxis2 = {'title': 'Total profesorado', 'side': 'right', 'range': [0, max(teachers)+5]},
+        yaxis2 = {'title': 'Total profesorado', 'side': 'right',
+        'range': [0, max(teachers)+5]},
         width = 700,
         height = 500,
         )
- 
 
     fig.update_layout(layout)
     iplot(fig)
