@@ -16,9 +16,14 @@ pio.templates.default = 'plotly_white'
 
 
 def hbar(
-    x_values, y_values, trace_names=None, colors=None, title='', fig_size=(700, 1000),
+    x_values,
+    y_values,
+    trace_names=None,
+    colors=None,
+    title='',
+    fig_size=(700, 1000),
 ):
-    ''' Horizontal stacked barchart '''
+    '''Horizontal stacked barchart'''
     if trace_names is None:
         trace_names = [x.name for x in x_values]
     if colors is None:
@@ -58,7 +63,7 @@ def bar_simple(
     yaxis_range=None,
     mark_colors=False,
 ):
-    ''' Barchart with single bars '''
+    '''Barchart with single bars'''
 
     if mark_colors:
         colors = y_values.apply(lambda x: 'green' if x >= 5 else 'red')
@@ -88,7 +93,7 @@ def bar_simple(
 
 
 def cbar(x_labels, series, is_percentage=True, barmode='group', color_series=[]):
-    ''' Barchart with multiple bars '''
+    '''Barchart with multiple bars'''
     data = []
     for i, (name, values) in enumerate(series.items()):
         trace_config = {
@@ -110,7 +115,7 @@ def cbar(x_labels, series, is_percentage=True, barmode='group', color_series=[])
 
 
 def scatter(xi, y, dot_labels, x_title=None, y_title=None):
-    ''' Scatter plot with regression line '''
+    '''Scatter plot with regression line'''
     # get lineal regression
     slope, intercept, r_value, p_value, std_err = stats.linregress(xi, y)
     line = slope * xi + intercept
@@ -147,7 +152,7 @@ def scatter(xi, y, dot_labels, x_title=None, y_title=None):
 
 
 def dbar(x_values, y_values, title='', is_percentage=True, inverted_colors=False):
-    ''' Barchart for displaying deltas (differences) '''
+    '''Barchart for displaying deltas (differences)'''
 
     invf = -1 if inverted_colors else 1
     trace_config = {
@@ -169,7 +174,7 @@ def dbar(x_values, y_values, title='', is_percentage=True, inverted_colors=False
 
 
 def bc_bar(df):
-    ''' Barplot for comparing acquisition of basic competences '''
+    '''Barplot for comparing acquisition of basic competences'''
     levels = pd.unique(df['nivel'])
 
     trace_colors = dict(zip(['PA', 'AD', 'MA', 'EX'], cl.scales['4']['div']['Spectral']))
@@ -216,7 +221,7 @@ def bc_bar(df):
 
 
 def heatmap(x_values, y_values, z_values, colorscale, width=600, height=600):
-    ''' Heatmap '''
+    '''Heatmap'''
     trace = go.Heatmap(
         x=x_values,
         y=y_values,
@@ -231,7 +236,7 @@ def heatmap(x_values, y_values, z_values, colorscale, width=600, height=600):
 
 
 def bc_evolution(df):
-    ''' Lineplot for showing evolution of basic competences acquisition '''
+    '''Lineplot for showing evolution of basic competences acquisition'''
     items = np.sort(pd.unique(df['item']))
 
     data = []
@@ -260,7 +265,7 @@ def bc_evolution(df):
 
 
 def bc_extremes(df):
-    ''' Plot miminum and maximum marks of basic competences for each group '''
+    '''Plot miminum and maximum marks of basic competences for each group'''
 
     # build data series
     worst_marked = {'items': [], 'marks': []}
@@ -298,17 +303,21 @@ def bc_extremes(df):
     # plot data
     data = [trace1, trace2]
 
-    layout = go.Layout(hovermode='closest', width=600, height=600,)
+    layout = go.Layout(
+        hovermode='closest',
+        width=600,
+        height=600,
+    )
 
     fig = go.Figure(data=data, layout=layout)
     iplot(fig)
 
 
-def num_students_evolution(df, stages, years, ratio=False):
-    ''' Lineplot for showing evolution of number of students '''
+def num_students_evolution(df, stages, years, ratio=False, max_ratio=False):
+    '''Lineplot for showing evolution of number of students'''
 
     if ratio:
-        agg_func, ytitle = 'mean', 'Ratio'
+        agg_func, ytitle = 'mean' if not max_ratio else 'max', 'Ratio'
     else:
         agg_func, ytitle = 'sum', 'Núm. alumnado'
 
@@ -341,3 +350,129 @@ def num_students_evolution(df, stages, years, ratio=False):
 
     fig = dict(data=data, layout=layout)
     iplot(fig)
+
+
+# By BGD'21 (Antonio Dorta - 17/01/2021)
+# Plot the evolution of total number of students and teachers
+# Data of teachers is not included in df, we must receive it
+# in a dictionary data_teachers = { year1: total1, year2: total2, ... }
+def total_students_teachers_evolution(students, teachers, years, students_diff=None):
+    '''Lineplot for showing evolution of number of students'''
+    fig = plotly.subplots.make_subplots(specs=[[{"secondary_y": True}]])
+
+    students_norm = (
+        students if not students_diff else np.array(students) - np.array(students_diff[0])
+    )
+    fig.add_trace(
+        go.Bar(
+            {
+                'x': years,
+                'y': students_norm,
+                'name': 'Alumnado',
+                'text': students_norm,
+                'hoverinfo': ' name+text',
+                'marker_color': 'blue',
+            }
+        ),
+        secondary_y=False,
+    )
+    if students_diff:
+        fig.add_trace(
+            go.Bar(
+                {
+                    'x': years,
+                    'y': students_diff[0],
+                    'name': students_diff[1],
+                    'text': students_diff[0],
+                    'hoverinfo': ' name+text',
+                    'marker_color': 'darkgreen',
+                }
+            ),
+            secondary_y=False,
+        )
+
+    fig.add_trace(
+        go.Scatter(
+            {
+                'x': years,
+                'y': teachers,
+                'name': 'Profesorado',
+                'text': teachers,
+                'hoverinfo': ' name+text',
+                'marker_color': 'red',
+            }
+        ),
+        secondary_y=True,
+    )
+    layout = go.Layout(
+        xaxis={'title': 'Curso escolar'},
+        yaxis={
+            'title': 'Total alumnado',
+            'side': 'left',
+            'range': [0, max(900, max(students))],
+        },
+        yaxis2={
+            'title': 'Total profesorado',
+            'side': 'right',
+            'range': [0, max(90, max(teachers))],
+        },
+        width=900,
+        height=500,
+        barmode='stack',
+    )
+
+    fig.update_layout(layout)
+    iplot(fig)
+
+
+"""
+# By BGD'21 (Antonio Dorta - 17/01/2021)
+# Plot the evolution of total number of students and teachers
+# Data of teachers is not included in df, we must receive it
+# in a dictionary data_teachers = { year1: total1, year2: total2, ... }
+def total_students_teachers_evolution(df, data_teachers, years):
+    ''' Lineplot for showing evolution of number of students '''
+
+    teachers = []
+    for year in years:
+        teachers.append(data_teachers[year])
+
+    students = df.groupby('curso').agg({'ratio': 'sum'})['ratio'].values
+    fig = plotly.subplots.make_subplots(specs=[[{"secondary_y": True}]])
+
+    fig.add_trace(
+        go.Bar( 
+            {
+                'x': years,
+                'y': students,
+                'name': 'Alumnado',
+                'text': students,
+                'hoverinfo':' name+text',
+            }
+        ),
+        secondary_y = False 
+    )
+    fig.add_trace(
+        go.Scatter(
+            {
+                'x': years,
+                'y': teachers,
+                'name': 'Profesorado',
+                'text': teachers,
+                'hoverinfo':' name+text',
+            }
+        ),
+        secondary_y = True 
+    )
+    layout = go.Layout(
+        xaxis = {'title': 'Curso escolar'},
+        yaxis = {'title': 'Total alumnado', 'side': 'left'},
+        yaxis2 = {'title': 'Total profesorado', 'side': 'right', 'range': [0, max(teachers)+5]},
+        width = 700,
+        height = 500,
+        )
+ 
+
+    fig.update_layout(layout)
+    iplot(fig)
+    """

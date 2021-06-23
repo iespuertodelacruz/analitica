@@ -29,6 +29,8 @@ coloredlogs.install(
     logger=logger,
 )
 
+DATA_STAGED_DIR = 'data_staged'
+DATA_LANDING_DIR = 'data_landing'
 NOT_FOUND_GROUP_MSG = 'Encontrado grupo {group} que no está en el excel de referencia'
 
 
@@ -40,7 +42,7 @@ class DataLoader:
         self.evaluation = evaluation
         self.eval_index = int(evaluation[1]) - 1
         self.basename = f"{year}{evaluation}"
-        self.path_target = os.path.join("data", f"{year}.xlsx")
+        self.path_target = os.path.join(DATA_STAGED_DIR, f"{year}.xlsx")
         self.wb = openpyxl.load_workbook(self.path_target)
         self.sh = self.wb[evaluation]
         self._load_groups()
@@ -93,7 +95,7 @@ class DataLoader:
 
     def load_academic(self):
         logger.info("Cargando información de rendimiento...")
-        for file in Path('./data_tmp').glob(f'{self.basename}*.csv'):
+        for file in Path(DATA_LANDING_DIR).glob(f'{self.basename}*.csv'):
             with open(file, encoding='ISO-8859-1') as f:
                 for line in f.readlines():
                     if re.search('0 suspensos', line):
@@ -117,7 +119,7 @@ class DataLoader:
     def load_cohabitation(self):
         logger.info("Cargando información de convivencia...")
         filename = f"{self.basename}_CONVIVENCIA.ods"
-        path = os.path.join("data_tmp", filename)
+        path = os.path.join(DATA_LANDING_DIR, filename)
         try:
             data = pyexcel_ods.get_data(path)
         except FileNotFoundError:
@@ -144,7 +146,7 @@ class DataLoader:
     def load_absence(self):
         logger.info("Cargando información de absentismo...")
         filename = f"{self.basename}_ABSENTISMO.pdf"
-        path = os.path.join("data_tmp", filename)
+        path = os.path.join(DATA_LANDING_DIR, filename)
         try:
             source = PyPDF2.PdfFileReader(open(path, "rb"))
         except FileNotFoundError:

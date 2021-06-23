@@ -4,30 +4,30 @@ Informes hechos en Python para el análisis trimestral de rendimiento, absentism
 
 ## Preparación del fichero de destino
 
-El formato final de información con el que trabajan los Python notebooks es un fichero tipo `.xlsx` y están en la carpeta `data`:
+El formato final de información con el que trabajan los Python notebooks es un fichero tipo `.xlsx` y se encuentran en la carpeta `data_staged`:
 
-```
-data
+```console
+data_staged
 ├── C1516.xlsx
 ├── C1617.xlsx
 └── C1718.xlsx
 ```
 
-Cada fichero de estos tendrá tres _hojas_ cada una con la nomenclatura `E1`, `E2` y `E3` representando las tres evaluaciones. En cada hoja habrá que cumplimentar las dos primera columnas:
+Cada fichero de estos tendrá tres "sheets" (_hojas_) cada una con la nomenclatura `E1`, `E2` y `E3` representando las tres evaluaciones. En cada hoja habrá que cumplimentar las dos primeras columnas:
 
 - **grupo**: nombres de los grupos con los que queremos trabajar en la evaluación en cuestión.
 - **etapa**: nombre de la enseñanza de cada grupo. Una forma de agrupar los datos en el análisis posterior.
 
-Pero antes de llegar a esos ficheros, hay que **extraer la información** de varias fuentes: rendimiento, absentismo y convivencia.
+Para rellenar el resto de columnas de estos ficheros hay que **extraer la información** de varias fuentes: rendimiento, absentismo y convivencia.
 
 ### Rendimiento
 
-Se espera que hayan **ficheros .csv** de rendimiento en la carpeta `data_tmp` con la siguiente nomenclatura:
+Se espera que hayan **ficheros .csv** de rendimiento en la carpeta `data_landing` con la siguiente nomenclatura:
 
 #### Primera evaluación
 
-```
-data_tmp
+```console
+data_landing
 ├── C1718E1_CFGM.csv  # 1ª evaluación parcial
 ├── C1718E1_CFGS.csv  # 1ª evaluación parcial
 ├── C1718E1_BACH.csv  # 1ª evaluación parcial
@@ -37,8 +37,8 @@ data_tmp
 
 #### Segunda evaluación
 
-```
-data_tmp
+```console
+data_landing
 ├── C1718E2_1CFGM.csv  # 2ª evaluación parcial
 ├── C1718E2_1CFGS.csv  # 2ª evaluación parcial
 ├── C1718E2_2CFGM.csv  # E.Final (Decisión Acc. módulos no presenciales)
@@ -51,8 +51,8 @@ data_tmp
 
 #### Tercera evaluación
 
-```
-data_tmp
+```console
+data_landing
 ├── C1718E3_12DAM.csv  # Evaluación final (Ordinaria) - 1º y 2º DAM
 ├── C1718E3_1CFGM.csv  # Evaluación final (Ordinaria)
 ├── C1718E3_1CFGS.csv  # Evaluación final (Ordinaria)
@@ -74,10 +74,10 @@ data_tmp
 
 El absentismo se va a estudiar de forma acumulada y será la suma de la faltas justificadas e injustificadas.
 
-Se espera que haya un fichero de absentismo en la carpeta `data_tmp` con la siguiente nomenclatura:
+Se espera que haya un fichero de absentismo en la carpeta `data_landing` con la siguiente nomenclatura:
 
-```
-data_tmp
+```console
+data_landing
 └── C1718E1_ABSENTISMO.pdf  # E2 ó E3
 ```
 
@@ -94,10 +94,10 @@ data_tmp
 
 ### Convivencia
 
-Se espera que haya un fichero de convivencia en la carpeta `data_tmp` con la siguiente nomenclatura:
+Se espera que haya un fichero de convivencia en la carpeta `data_landing` con la siguiente nomenclatura:
 
-```
-data_tmp
+```console
+data_landing
 └── C1718E1_CONVIVENCIA.ods  # E2 ó E3
 ```
 
@@ -131,15 +131,15 @@ Donde:
 Activar el entorno virtual y ejecutar:
 
 ```console
-$> python extract.py --year=1718 --eval=2  # 2ª eval. del curso 2017-2018
+$ python3 extract.py --year=1718 --eval=2  # 2ª eval. del curso 2017-2018
 ```
 
 ## Competencias básicas
 
-Se espera que haya un fichero de estadísticas de calificaciones de competencias básicas en la carpeta `data/ccbb` con la siguiente nomenclatura:
+Se espera que haya un fichero de estadísticas de calificaciones de competencias básicas en la carpeta `data_staged/ccbb` con la siguiente nomenclatura:
 
-```
-data/ccbb
+```console
+data_staged/ccbb
 └── C1718E1_ESO_CCBB.csv  # E2 ó E3
 ```
 
@@ -148,7 +148,7 @@ data/ccbb
 
 > NOTA: Este fichero sale directamente de Pincel EKADE desde la opción "Estadísticas de rendimiento escolar en items por evaluación".
 
-**OJO! Este fichero va en la carpeta `data/ccbb` NO en la carpeta `data_tmp`**
+**OJO! Este fichero va en la carpeta `data_staged/ccbb` NO en la carpeta `data_landing`**
 
 ## Pruebas de certificación para población escolar
 
@@ -156,8 +156,8 @@ Las [PCEI](http://www.gobiernodecanarias.org/educacion/web/idiomas/pruebas_certi
 
 Si este es el caso, se espera tener un fichero en la siguiente ruta:
 
-```
-data/pcei
+```console
+data_staged/pcei
 └── C1819_PCEI.csv
 ```
 
