@@ -10,24 +10,26 @@ Options:
     --type=<type>   Type of data (academic, cohabitation, absence, all)
                     [default: all]
 """
-from docopt import docopt
-import os
-import openpyxl
-import pyexcel_ods
-import coloredlogs
 import logging
-import PyPDF2
+import os
 import re
 import sys
 from pathlib import Path
 
+import coloredlogs
+import openpyxl
+import pyexcel_ods
+import PyPDF2
+from docopt import docopt
 
 logger = logging.getLogger(__name__)
 coloredlogs.install(
-    fmt="%(asctime)s %(filename)s:%(lineno)d %(levelname)s %(message)s",
+    fmt="%(asctime)s %(filename)s:%(lineno)-3d %(levelname)-8s %(message)s",
     level="DEBUG",
     logger=logger,
 )
+
+NOT_FOUND_GROUP_MSG = 'Encontrado grupo {group} que no está en el excel de referencia'
 
 
 class DataLoader:
@@ -71,15 +73,15 @@ class DataLoader:
         self.sh.cell(*cell, value)
 
     def _grab_group_academics(self, academics):
+        COLUMNS = {'GRUPO': 4, 'TOTAL': 5, '%TOTAL': 6}
+
         fields = [f.strip('"') for f in academics.split(';')]
-        group = fields[3]
+        group = fields[COLUMNS['GRUPO']]
         if group not in self.groups.keys():
-            logger.warning(
-                (f"Grupo '{group}' no encontrado en " "el fichero de configuración")
-            )
+            logger.warning(NOT_FOUND_GROUP_MSG.format(group=group))
             return
-        success_abs = int(fields[9])
-        success_pct = float(fields[10].replace(',', '.'))
+        success_abs = int(fields[COLUMNS['TOTAL']])
+        success_pct = float(fields[COLUMNS['%TOTAL']].replace(',', '.'))
         try:
             ratio = round(success_abs * 100 / success_pct)
         except ZeroDivisionError:
@@ -91,19 +93,17 @@ class DataLoader:
 
     def load_academic(self):
         logger.info("Cargando información de rendimiento...")
-        for file in Path('./data_tmp').glob('*.csv'):
+        for file in Path('./data_tmp').glob(f'{self.basename}*.csv'):
             with open(file, encoding='ISO-8859-1') as f:
                 for line in f.readlines():
-                    if re.search('TODO APROBADO', line):
+                    if re.search('0 suspensos', line):
                         self._grab_group_academics(line)
         self.wb.save(self.path_target)
 
     def _grab_group_cohabitation(self, cohabitation):
         group = cohabitation[0]
         if group not in self.groups.keys():
-            logger.warning(
-                (f"Grupo '{group}' no encontrado en " "el fichero de configuración")
-            )
+            logger.warning(NOT_FOUND_GROUP_MSG.format(group=group))
             return
         if len(cohabitation) > 1:
             reports = int(cohabitation[1])
@@ -132,9 +132,7 @@ class DataLoader:
     def _grab_group_absence(self, absence, page):
         group = absence.groups()[0]
         if group not in self.groups.keys():
-            logger.warning(
-                (f"Grupo '{group}' no encontrado en " "el fichero de configuración")
-            )
+            logger.warning(NOT_FOUND_GROUP_MSG.format(group=group))
             return
         r = re.search(r"\(SI\)(\d+,\d\d)(\d+,\d\d).*MOTIVOS", page)
         if r:
