@@ -462,6 +462,26 @@ def bc_diff(df_bc_comp: pd.DataFrame):
     )
 
 
+def bar_pcei(label, num_groups=2):
+    path = f'../../data_staged/pcei/{label}_PCEI.csv'
+    df_pcei = pd.read_csv(
+        path,
+        encoding='cp1252',
+        sep=';',
+        nrows=num_groups,
+        usecols=range(5, 8),
+        engine='python',
+    )
+    df_pcei.rename(
+        columns={'GRUPO': 'grupo', 'NEGATIVAS': 'NO CERTIFICA', 'POSITIVAS': 'CERTIFICA'},
+        inplace=True,
+    )
+
+    x_labels = df_pcei['grupo']
+    series = df_pcei.drop('grupo', axis=1).to_dict(orient='list')
+    cbar(x_labels, series, is_percentage=False, color_series=['#cf3c3c', '#18a324'])
+
+
 """
 # By BGD'21 (Antonio Dorta - 17/01/2021)
 # Plot the evolution of total number of students and teachers
