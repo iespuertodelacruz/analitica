@@ -53,7 +53,7 @@ class DataLoader:
         for i, row in enumerate(self.sh):
             if row[0].value == 'grupo':
                 continue
-            self.groups[row[0].value] = i + 1
+            self.groups[row[0].value.upper()] = i + 1
 
     def _load_columns(self):
         self.columns = {
@@ -78,7 +78,7 @@ class DataLoader:
         COLUMNS = {'GRUPO': 4, 'TOTAL': 5, '%TOTAL': 6}
 
         fields = [f.strip('"') for f in academics.split(';')]
-        group = fields[COLUMNS['GRUPO']]
+        group = fields[COLUMNS['GRUPO']].upper()
         if group not in self.groups.keys():
             logger.warning(NOT_FOUND_GROUP_MSG.format(group=group))
             return
@@ -103,7 +103,7 @@ class DataLoader:
         self.wb.save(self.path_target)
 
     def _grab_group_cohabitation(self, cohabitation):
-        group = cohabitation[0]
+        group = cohabitation[0].upper()
         if group not in self.groups.keys():
             logger.warning(NOT_FOUND_GROUP_MSG.format(group=group))
             return
@@ -132,7 +132,7 @@ class DataLoader:
         self.wb.save(self.path_target)
 
     def _grab_group_absence(self, absence, page):
-        group = absence.groups()[0]
+        group = absence.groups()[0].upper()
         if group not in self.groups.keys():
             logger.warning(NOT_FOUND_GROUP_MSG.format(group=group))
             return
