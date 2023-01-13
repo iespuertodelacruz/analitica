@@ -87,7 +87,8 @@ class DataLoader:
         try:
             ratio = round(success_abs * 100 / success_pct)
         except ZeroDivisionError:
-            logger.error(f"Grupo '{group}' no tiene alumnado!")
+            logger.error(f"No se puede calcular el número de alumnado del grupo '{group}'")
+            logger.error('└─ 0% de alumnado con 0 suspensos!')
             ratio = 0
 
         self._set_target_value(group, 'éxito', success_pct)
