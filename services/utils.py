@@ -12,7 +12,7 @@ def make_colorscale(colors, thresholds=None, discrete=False):
             ls = thresholds
         window = ls[1:-1]
         thresholds = [ls[0]]
-        thresholds += (list(itertools.chain(*zip(window, window))))
+        thresholds += list(itertools.chain(*zip(window, window)))
         thresholds.append(ls[-1])
         colors = list(itertools.chain(*zip(colors, colors)))
     else:
