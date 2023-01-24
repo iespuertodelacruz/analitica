@@ -43,6 +43,11 @@ def format_value(value, is_percentage=True):
 
 def fill_max_ratio(row):
     grupo = row['grupo']
+    nivel = grupo[:-1]
     etapa = row['etapa']
-    row['max_ratio'] = settings.MAX_RATIO.get(grupo) or settings.MAX_RATIO[etapa]
+    row['max_ratio'] = (
+        settings.MAX_RATIO.get(grupo)
+        or settings.MAX_RATIO.get(nivel)
+        or settings.MAX_RATIO[etapa]
+    )
     return row

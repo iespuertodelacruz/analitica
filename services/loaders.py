@@ -85,7 +85,19 @@ def load_data(year, evaluation):
 
             labels.append((year_label, evaluation_label))
 
+    # Establecemos las ratios máximas
+    # Ojo porque para cursos anteriores no tienen por qué ser las mismas!!
     df = df.reset_index().apply(utils.fill_max_ratio, axis=1)
+    # PMAR (último grupo de 2ESO)
+    pmar_group = (
+        df['grupo'][df['grupo'].str.startswith('ESO2')].sort_values(ascending=False).iloc[0]
+    )
+    df.loc[df['grupo'] == pmar_group, 'max_ratio'] = settings.MAX_RATIO['PMAR']
+    # DIVER (último grupo de 3ESO)
+    diver_group = (
+        df['grupo'][df['grupo'].str.startswith('ESO3')].sort_values(ascending=False).iloc[0]
+    )
+    df.loc[df['grupo'] == diver_group, 'max_ratio'] = settings.MAX_RATIO['DIVER']
     df = df.set_index(['curso', 'evaluación', 'grupo'])
 
     return df, df_bc, labels

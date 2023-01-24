@@ -36,6 +36,8 @@ COLUMNS = {
 }
 
 MAX_RATIO = {
+    'ESO1': 27,
+    'ESO2': 27,
     'ESO': 30,
     'FPB': 12,
     'BACH': 30,
@@ -43,4 +45,6 @@ MAX_RATIO = {
     'CFGS': 30,
     '1ARI': 20,
     '2ARI': 20,
+    'PMAR': 12,
+    'DIVER': 15,
 }
