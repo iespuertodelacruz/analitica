@@ -3,6 +3,8 @@ import itertools
 import numpy as np
 from scipy.interpolate import interp1d
 
+from . import settings
+
 
 def make_colorscale(colors, thresholds=None, discrete=False):
     if discrete:
@@ -37,3 +39,10 @@ def format_value(value, is_percentage=True):
     if is_percentage:
         r += '%'
     return r
+
+
+def fill_max_ratio(row):
+    grupo = row['grupo']
+    etapa = row['etapa']
+    row['max_ratio'] = settings.MAX_RATIO.get(grupo) or settings.MAX_RATIO[etapa]
+    return row

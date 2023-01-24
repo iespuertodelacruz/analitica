@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from . import settings
+from . import settings, utils
 
 
 def get_year_label(year: str):
@@ -84,6 +84,9 @@ def load_data(year, evaluation):
             df_bc = df_bc.append(partial_df_bc)
 
             labels.append((year_label, evaluation_label))
+
+    df = df.reset_index().apply(utils.fill_max_ratio, axis=1)
+    df = df.set_index(['curso', 'evaluación', 'grupo'])
 
     return df, df_bc, labels
 

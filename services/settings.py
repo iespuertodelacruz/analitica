@@ -34,3 +34,13 @@ COLUMNS = {
     'ESTUDIO': 'nivel',
     'ITEM': 'item',
 }
+
+MAX_RATIO = {
+    'ESO': 30,
+    'FPB': 12,
+    'BACH': 30,
+    'CFGM': 20,
+    'CFGS': 30,
+    '1ARI': 20,
+    '2ARI': 20,
+}
